@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: testedocker
+spec:
+  selector:
+    matchLabels:
+      app: testedocker
+  template:
+    metadata:
+      labels:
+        app: testedocker
+    spec:
+      containers:
+      - name: testedocker
+        image: testedocker
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80
