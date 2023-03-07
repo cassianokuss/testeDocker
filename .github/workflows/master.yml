@@ -32,7 +32,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: labacl/dev:${{ env.mascot }}.${{ steps.vars.outputs.sha_short }}
+          tags: labacl/dev:${{ env.app }}.${{ steps.vars.outputs.sha_short }}
 
   deploy:
     name: deploy
@@ -54,7 +54,7 @@ jobs:
           git config --global user.name "deploy"
           git config --global credential.helper cache
           git clone https://${{secrets.ACCESS_TOKEN}}@github.com/cassianokuss/testeK8s.git
-          cd testeK8s/k8s/${{ env.mascot }}
-          kustomize edit set image ${{ env.mascot }}=labacl/dev:${{ env.mascot }}.${{ steps.vars.outputs.sha_short }}
+          cd testeK8s/k8s/${{ env.app }}
+          kustomize edit set image ${{ env.app }}=labacl/dev:${{ env.app }}.${{ steps.vars.outputs.sha_short }}
           git commit -am "Atualização da imagem"
           git push
