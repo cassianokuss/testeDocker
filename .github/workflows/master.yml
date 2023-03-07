@@ -42,24 +42,16 @@ jobs:
       - name: Add short sha to outputs
         id: vars
         run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-      - name: checkout
-        uses: actions/checkout@v3
-        with:
-          repository: cassianokuss/testeK8s
       - name: kustomize
         uses: imranismail/setup-kustomize@v1
         with:
           kustomize-version: v3.6.1
       - name: update k8s
         run: |
-          cd k8s/testedocker
-          kustomize edit set image testedocker=labacl/dev:testedocker.${{ steps.vars.outputs.sha_short }}
-      - name: commit
-        run: |
           git config --local user.email "deploy@aclti.com.br"
           git config --local user.name "deploy"
+          git clone https://${{secrets.ACCESS_TOKEN}}@github.com/cassianokuss/testeK8s
+          cd testek8s/k8s/testedocker
+          kustomize edit set image testedocker=labacl/dev:testedocker.${{ steps.vars.outputs.sha_short }}
           git commit -am "Atualização da imagem"
-      - name: push
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          git push
