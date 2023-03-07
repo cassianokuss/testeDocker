@@ -6,6 +6,8 @@ on:
       - "master"
 env:
   app: testedocker
+  k8s-path: testeK8s/k8s
+  k8s-uri: https://${{secrets.ACCESS_TOKEN}}@github.com/cassianokuss/testeK8s.git
 
 jobs:
   build:
@@ -53,8 +55,8 @@ jobs:
           git config --global user.email "deploy@aclti.com.br"
           git config --global user.name "deploy"
           git config --global credential.helper cache
-          git clone https://${{secrets.ACCESS_TOKEN}}@github.com/cassianokuss/testeK8s.git
-          cd testeK8s/k8s/${{ env.app }}
+          git clone ${{ env.k8s-uri }}
+          cd ${{ env.k8s-path }}/${{ env.app }}
           kustomize edit set image ${{ env.app }}=labacl/dev:${{ env.app }}.${{ steps.vars.outputs.sha_short }}
           git commit -am "Atualização da imagem"
           git push
