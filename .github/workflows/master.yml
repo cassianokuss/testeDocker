@@ -51,6 +51,7 @@ jobs:
           git config --local user.email "deploy@aclti.com.br"
           git config --local user.name "deploy"
           git clone https://github.com/cassianokuss/testeK8s.git
+          ls -la
           cd k8s/testedocker
           kustomize edit set image testedocker=labacl/dev:testedocker.${{ steps.vars.outputs.sha_short }}
           git commit -am "Atualização da imagem"
